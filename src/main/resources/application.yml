@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: springBootSecurityJWT
+  datasource:
+    url: jdbc:postgresql://localhost:6666/securityDb
+    username: user
+    password: 4321
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      format_sql: true
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+token:
+  signing:
+    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+server:
+  port: 8081
