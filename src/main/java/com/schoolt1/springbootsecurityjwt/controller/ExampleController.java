@@ -23,7 +23,7 @@ public class ExampleController {
 
     @GetMapping
     @Operation(summary = "Доступен только авторизованным пользователям")
-    public String example(@RequestHeader(name = "Authorisation", required = false) String bearerAuth) {
+    public String example() {
         return SECRET_CONTENT;
     }
 
