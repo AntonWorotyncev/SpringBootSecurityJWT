@@ -20,6 +20,11 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
+    final int DAYS_TO_EXPIRATION = 100000;
+    final int MILLISECONDS_IN_MINUTE = 60000;
+    final int MINUTES_IN_HOUR = 60;
+    final int HOURS_IN_DAY = 24;
+
     @Value("${token.signing.key}")
     private String jwtSigningKey;
 
@@ -37,20 +42,21 @@ public class JwtServiceImpl implements JwtService {
         return generateToken(claims, userDetails);
     }
 
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolvers.apply(claims);
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    public  <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolvers.apply(claims);
-    }
-
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + DAYS_TO_EXPIRATION
+                        * MINUTES_IN_HOUR * HOURS_IN_DAY * MILLISECONDS_IN_MINUTE))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -66,8 +72,7 @@ public class JwtServiceImpl implements JwtService {
 
 
     public Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
     }
 
     public Key getSigningKey() {

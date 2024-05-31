@@ -1,6 +1,5 @@
 package com.schoolt1.springbootsecurityjwt.config;
 
-import com.schoolt1.springbootsecurityjwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +53,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

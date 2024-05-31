@@ -7,10 +7,8 @@ import com.schoolt1.springbootsecurityjwt.repository.UserRepository;
 import com.schoolt1.springbootsecurityjwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +33,6 @@ public class UserServiceImpl implements UserService {
      */
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            // Заменить на свои исключения
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
 
@@ -46,26 +43,15 @@ public class UserServiceImpl implements UserService {
         return save(user);
     }
 
-//    /**
-//     * Получение пользователя по имени пользователя
-//     *
-//     * @return пользователь
-    public User getByUsername(String username) {
-        return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-
-    }
-
     /**
      * Получение пользователя по имени пользователя
-     * <p>
-     * Нужен для Spring Security
      *
-     * @return пользователь
+     * @return найденный пользователь
      */
-//    public UserDetailsService userDetailsService() {
-//        return this::getByUsername;
-//    }
+    private User getByUsername(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+    }
 
     /**
      * Получение текущего пользователя
@@ -85,7 +71,7 @@ public class UserServiceImpl implements UserService {
      */
     @Deprecated
     public void getAdmin() {
-        var user = getCurrentUser();
+        User user = getCurrentUser();
         user.setRole(Role.ROLE_ADMIN);
         save(user);
     }

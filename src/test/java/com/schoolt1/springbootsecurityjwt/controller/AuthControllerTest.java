@@ -1,8 +1,5 @@
 package com.schoolt1.springbootsecurityjwt.controller;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,12 +26,12 @@ import org.springframework.http.MediaType;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@Import({SecurityConfig.class,AuthenticationServiceImpl.class, JwtAuthenticationFilter.class})
+@Import({SecurityConfig.class,AuthenticationServiceImpl.class,
+        JwtAuthenticationFilter.class})
 @WebMvcTest(AuthController.class)
 public class AuthControllerTest {
 
@@ -94,7 +91,6 @@ public class AuthControllerTest {
 
     @Test
     void signIn() throws Exception {
-
         Mockito.when(userDetailsService.loadUserByUsername(Mockito.any())).thenReturn(User.builder()
                 .username(signInRequest.getUsername()).email("kaktotak@gmaiil.com")
                 .role(Role.ROLE_USER).password("1111").id(1L).build());
@@ -111,20 +107,4 @@ public class AuthControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(jwtResponse.getToken()));
     }
-
-    @Test
-    void signInTrow() throws Exception {
-
-        Mockito.when(authenticationManager.authenticate(Mockito.any()))
-                .thenThrow(AuthenticationException.class);
-
-        assertThatThrownBy(() -> {
-            (authenticationManager.authenticate(new "invalidUser", "password");
-
-        mockMvc.perform(post("/auth/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signInRequest)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(jwtResponse.getToken()));
-        }
 }
