@@ -10,7 +10,6 @@ import com.schoolt1.springbootsecurityjwt.dto.SignInRequest;
 import com.schoolt1.springbootsecurityjwt.dto.SignUpRequest;
 import com.schoolt1.springbootsecurityjwt.model.Role;
 import com.schoolt1.springbootsecurityjwt.model.User;
-import com.schoolt1.springbootsecurityjwt.service.AuthenticationService;
 import com.schoolt1.springbootsecurityjwt.service.JwtService;
 import com.schoolt1.springbootsecurityjwt.service.UserService;
 import com.schoolt1.springbootsecurityjwt.service.impl.AuthenticationServiceImpl;
