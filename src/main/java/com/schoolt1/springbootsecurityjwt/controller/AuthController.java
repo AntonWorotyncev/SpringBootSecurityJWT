@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @GetMapping("/get-admin")
-    @Operation(summary = "Получить роль ADMIN (для демонстрации)")
+    @Operation(summary = "Получить роль admin (для демонстрации)")
     public void getAdmin() {
         service.getAdmin();
     }

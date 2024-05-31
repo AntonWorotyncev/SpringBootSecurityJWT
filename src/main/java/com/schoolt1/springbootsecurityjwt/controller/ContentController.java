@@ -25,7 +25,6 @@ public class ContentController {
 
     @GetMapping("/admin")
     @Operation(summary = "Доступен только авторизованным пользователям с ролью ADMIN")
-    @PreAuthorize("hasRole('ADMIN')")
     public String getAdminSecretContent() {
         return ADMIN_SECRET_CONTENT;
     }

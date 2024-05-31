@@ -30,31 +30,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@Import({SecurityConfig.class,AuthenticationServiceImpl.class,
-        JwtAuthenticationFilter.class})
+@Import({SecurityConfig.class, AuthenticationServiceImpl.class, JwtAuthenticationFilter.class})
 @WebMvcTest(AuthController.class)
 public class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private AuthenticationService authenticationService;
-
-   @MockBean
-    private JwtService jwtService;
-
-    @MockBean
-    AuthenticationManager authenticationManager;
-
     @MockBean
     private UserService userService;
 
     @MockBean
-    private UserDetailsService userDetailsService;
+    private JwtService jwtService;
 
-    @Autowired
-   private  JwtAuthenticationFilter jwtAuthenticationFilter;
+    @MockBean
+    private AuthenticationManager authenticationManager;
+
+    @MockBean
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private ObjectMapper objectMapper;

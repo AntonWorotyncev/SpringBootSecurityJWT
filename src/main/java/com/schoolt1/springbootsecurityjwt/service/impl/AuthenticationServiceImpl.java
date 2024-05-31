@@ -33,7 +33,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
 
-        var user = User.builder().username(request.getUsername()).email(request.getEmail())
+        var user = User.builder()
+                .username(request.getUsername()).email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_USER)
                 .build();
