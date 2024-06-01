@@ -20,10 +20,9 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-    final int DAYS_TO_EXPIRATION = 100000;
-    final int MILLISECONDS_IN_MINUTE = 60000;
-    final int MINUTES_IN_HOUR = 60;
-    final int HOURS_IN_DAY = 24;
+    final static int EXPIRATION = 100000;
+    final static int MINUTES_IN_HOUR = 60;
+    final static  int HOURS_IN_DAY = 24;
 
     @Value("${token.signing.key}")
     private String jwtSigningKey;
@@ -54,8 +53,8 @@ public class JwtServiceImpl implements JwtService {
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + DAYS_TO_EXPIRATION
-                        * MINUTES_IN_HOUR * HOURS_IN_DAY * MILLISECONDS_IN_MINUTE))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION
+                        * MINUTES_IN_HOUR * HOURS_IN_DAY))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
